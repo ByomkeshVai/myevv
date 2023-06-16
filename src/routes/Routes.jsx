@@ -1,10 +1,27 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Main from '../layouts/Main'
 import ECommerce from '../pages/Dashboard/ECommerce'
+import AllStaff from '../Admin/Dashboard/Staffs/AllStaff'
+import Main from '../layouts/Main'
+import AddStaff from '../Admin/Dashboard/Staffs/AddStaff'
+import DefaultLayout from '../layout/DefaultLayout'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <ECommerce />,
+    element: <DefaultLayout />,
+    children: [
+      {
+        path: '/dashboard',
+        element: <ECommerce></ECommerce>,
+      },
+    {
+        path: '/staff/all-staff',
+        element: <AllStaff></AllStaff>,
+      },
+      {
+        path: '/staff/add-staff',
+        element: <AddStaff></AddStaff>,
+      }
+    ]
   },
 ])
