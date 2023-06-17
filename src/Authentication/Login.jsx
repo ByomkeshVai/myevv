@@ -1,14 +1,11 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../../../providers/AuthProvider';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-hot-toast';
-import { saveUser } from '../../../api/auth';
-import { Helmet } from 'react-helmet';
 import { ImSpinner2 } from 'react-icons/Im'
-import { FcGoogle } from 'react-icons/fc'
 import { useState } from 'react';
 import { AiOutlineEye } from 'react-icons/Ai';
+import { AuthContext } from '../providers/AuthProvider';
 
 const Login = () => {
 
@@ -34,44 +31,10 @@ const Login = () => {
     };
 
 
-     const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then(result => {
-        // save user to db
-          navigate(from, { replace: true })
-                          const saveUser = { name: result.user.displayName, email: result.user.email, photo: result.user.photoURL, role: "student" }
-                          fetch(`${import.meta.env.VITE_API_URL}/users/${result.user.email}`, {
-                            method: 'PUT',
-                            headers: {
-                                    'content-type': 'application/json',
-                                    authorization: `Bearer ${localStorage.getItem('access-token')}`,
-                                },
-                            body: JSON.stringify(saveUser)
-                        })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.insertedId) {
-                                   toast.success('Auth Successful')
-                                }
-                                
-                            })
-
-
-
-          
-      })
-      .catch(err => {
-        setLoading(false)
-        toast.error(err.message)
-      })
-  }
     
     return (
         <>
             <div>
-              <Helmet>
-                <title>Sports Shala - Login</title>
-            </Helmet>
              <div className="">
                 <div className="hero-content flex-col lg:flex-row-reverse mx-auto text-center">
                     <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
@@ -109,16 +72,9 @@ const Login = () => {
                             )}
             </button>
                                 </div>
-                                 <div
-                                onClick={handleGoogleSignIn}
-                                className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'
-                                >
-                                <FcGoogle size={32} />
 
-                                <p>Continue with Google</p>
-                                </div>
                         </form>
-                        <p className='mb-6 text-center'><small>Don't Have a Account <Link to="/register" className='text-blue-900 font-bold'>Register</Link></small></p>
+                        <p className='mb-6 text-center'><small>Don't Have a Account <Link to="/signup" className='text-blue-900 font-bold'>Register</Link></small></p>
                     </div>
                 </div>
             </div>
