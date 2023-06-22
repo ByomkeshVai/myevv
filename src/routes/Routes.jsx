@@ -6,6 +6,8 @@ import AddStaff from '../Admin/Dashboard/Staffs/AddStaff'
 import DefaultLayout from '../layout/DefaultLayout'
 import Login from '../Authentication/Login'
 import Signup from '../Authentication/Signup'
+import AddUrl from '../Admin/Dashboard/WebUrl/AddUrl'
+import AllUrl from '../Admin/Dashboard/WebUrl/AllUrl'
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ export const router = createBrowserRouter([
       {
         path: '/staff/add-staff',
         element: <AddStaff></AddStaff>,
+      },
+      {
+        path: '/webUrl/all-link',
+        element: <AllUrl></AllUrl>,
+      },
+      {
+        path: '/webUrl/web-link',
+        element: <AddUrl></AddUrl>,
       },
 
 

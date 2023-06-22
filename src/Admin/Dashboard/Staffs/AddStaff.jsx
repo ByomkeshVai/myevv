@@ -10,7 +10,7 @@ import { addStaffData } from '../../../api/staff';
 
 const AddStaff = () => {
      const navigate = useNavigate()
-  const { user } = useContext(AuthContext)
+  const { user, createUser, updateUserProfile } = useContext(AuthContext)
 
   const [loading, setLoading] = useState(false)
     const [uploadButtonText, setUploadButtonText] = useState('Upload Image')
@@ -69,7 +69,7 @@ const AddStaff = () => {
       const zip = event.target.zip.value
       const state = event.target.state.value
       const country = event.target.country.value
-      const gender = gender
+      const genders = gender
       const city = event.target.city.value
       const transport = event.target.transport.value
       const ssn = event.target.ssn.value
@@ -81,35 +81,39 @@ const AddStaff = () => {
       const email = event.target.email.value
       const hireDates = hiredDate
       const terminateDates = terminateDate
-      const status = status
+      const statuss = status
       const loginEmail = event.target.loginEmail.value
       const loginPassword = event.target.loginPassword.value
       const birthDates = birthDate
 
       // Relation Category
-      const relation = event.target.relation.value
+      const relations = event.target.relations.value
       const contact = event.target.contact.value
       const contactNo = event.target.contactNo.value
-
-      // notes
-      const mrNumber = event.target.mrNumber.value
-      const client = event.target.client.value
-      const noteDate = selectedTime
-      const noteTime = selectedTime
-      const note = event.target.note.value
-
-      // Aide Pay Rate
-      const mrNumberAide = event.target.mrNumberAide.value
-      const clientNameAide = event.target.clientNameAide.value
-      const service = event.target.service.value
-      const rate = event.target.rate.value
+      const image = event.target.image.files[0]
+                    
       
-    const image = event.target.image.files[0]
+
+    //   // notes
+    //   const mrNumberes = event.target.mrNumberes.value
+    //   const client = event.target.client.value
+    //   const noteDate = selectedTime
+    //   const noteTime = selectedTime
+    //   const note = event.target.note.value
+
+    //   // Aide Pay Rate
+    //   const mrNumberAide = event.target.mrNumberAide.value
+    //   const clientNameAide = event.target.clientNameAide.value
+    //   const service = event.target.service.value
+    //   const rate = event.target.rate.value
+      
+
     setUploadButtonText('Uploading...')
     // Upload image
     imageUpload(image)
       .then(data => {
-        const classData = {
+          const staffData = {
+            image: data.data.display_url,
             firstName: firstName,
             lastName: lastName,
             googleAdrs: googleAdrs,
@@ -117,7 +121,7 @@ const AddStaff = () => {
             street: street,
             zip: zip,
             state: state,
-            gender: gender,
+            gender: genders,
             country: country,
             city: city,
             transport: transport,
@@ -130,46 +134,61 @@ const AddStaff = () => {
             email: email,
             hireDates: hireDates,
             terminateDates: terminateDates,
-            status: status,
+            status: statuss,
             birthDates: birthDates,
 
           relation: {
-            relation: relation,
+            relations: relations,
             contact: contact,
             contactNo: contactNo,
             },
-           notes: {
-            mrNumber: mrNumber,
-            client: client,
-            note: note,
-            },
-            AidePayRate: {
-            mrNumberAide: mrNumberAide,
-            clientNameAide: clientNameAide,
-            service: service,
-            rate: rate,
-            },
+        //    notes: {
+        //     mrNumbers: mrNumberes,
+        //     client: client,
+        //     noteDate: noteDate,
+        //     noteTime: noteTime,
+        //     note: note,
+        //     },
+        //     AidePayRate: {
+        //     mrNumberAide: mrNumberAide,
+        //     clientNameAide: clientNameAide,
+        //     service: service,
+        //     rate: rate,
+        //     },
             login: {
             loginEmail: loginEmail,
             loginPassword: loginPassword,
             },
-          image: data.data.display_url,
+            
           }
+
+           createUser(loginEmail, loginPassword)
+             .then(result => {
+                 const loggedUser = result.user;
+                 updateUserProfile(firstName, data.data.display_url)
+                     .then(res => res.json())
+                    .then(data => {if (data.insertedId) {
+                                    alert('Done')
+                            }
+                                    
+                     })
+                        })
+
+
           
           // post room data to server
-          
-            addStaffData(classData)
+            addStaffData(staffData)
             .then(data => {
                 console.log(data);
             setUploadButtonText('Uploaded!')
             setLoading(false)
-            toast.success('Class Added!')
+            toast.success('Staff Added!')
             // navigate('/instructor/dashboard/myclass')
           })
           .catch(err => console.log(err))
 
-        setLoading(false)
-      
+          setLoading(false)
+
       })
       .catch(err => {
         console.log(err.message)
