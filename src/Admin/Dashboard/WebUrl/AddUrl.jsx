@@ -2,9 +2,12 @@ import React, { useReducer, useState } from 'react';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import { addUrl } from '../../../api/url';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddUrl = () => {
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
+
     const initialState = {
         webName: "",
         webUrl: "",
@@ -38,7 +41,7 @@ const AddUrl = () => {
         .then(data => {
             setLoading(false)
             toast.success('Url Added!')
-            reset()
+            navigate('/webUrl/all-link')
           })
           .catch(err => console.log(err))
           setLoading(false)

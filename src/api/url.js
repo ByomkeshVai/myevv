@@ -27,6 +27,23 @@ export const deleteUrl = async id => {
   return result
 }
 
+export const UpdateUrl = async (id, status) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/web-url/status/${id}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('access-token')}`,
+      },
+      body: JSON.stringify(status),
+    }
+  )
+  const data = await response.json()
+  return data
+}
+
+
 // async function getCharacters() {
 //   const response = await axios.get(
 //     "https://finalspaceapi.com/api/v0/character/?limit=2"
