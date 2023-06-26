@@ -141,7 +141,7 @@ function openModal() {
     </div>
         ) : (
         <EmptyState
-          message='No Class data available.'
+          message='No Url data available.'
         />
         )
     );

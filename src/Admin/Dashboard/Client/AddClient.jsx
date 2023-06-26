@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { TbFidgetSpinner } from 'react-icons/tb';
+import { addClient } from '../../../api/client';
       
 
 const AddClient = () => {
   const [loading, setLoading] = useState(false)
   const [showPayerAuthorization, setShowPayerAuthorization] = useState(false);
+  const [showContact, setShowContact] = useState(false);
   const [showAddNote, setShowAddNote] = useState(false);
   const [showPrivatePayServiceRate, setShowPrivatePayServiceRate] = useState(false);
   const [showAddExclusion, setShowAddExclusion] = useState(false);
 
         const { handleSubmit, control } = useForm();
     const onSubmit = (data) => {
-        console.log(data);
+        addClient(data);
     }
     const activityOptions = [
     'Complete/Partial Bath',
@@ -414,35 +416,47 @@ const AddClient = () => {
         ))}
       </div>
 
-      <div className='p-2'>
-        <Controller
-          name="contacts"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <input className='mr-2' {...field} type="checkbox" />
-              <label>Add Contact</label>
-              {field.value && (
-                <div>
-                  <div>
-                    <label>Contact Name</label>
-                    <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" type="text" />
-                  </div>
-                  <div>
-                    <label>Contact Relationship</label>
-                    <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" type="text" />
-                  </div>
-                  <div>
-                    <label>Contact Phone</label>
-                    <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" type="number" />
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        />
-      </div>
 
+
+                                <div className='p-2 mr-2'>
+        <label>
+                        <input
+                            className='mr-2'
+                 type="checkbox"
+            checked={showContact}
+            onChange={() => setShowContact(!showContact)}
+          />  
+          Contact
+        </label>
+        {showContact && (
+          <div>
+            <div>
+              <label>Contact Name</label>
+              <Controller
+                 name="contact.contactName"
+                control={control}
+                render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md"  {...field} type="text" />}
+              />
+            </div>
+            <div>
+              <label>Contact Relationship</label>
+              <Controller
+                 name="contact.relationship"
+                control={control}
+                render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="text" />}
+              />
+            </div>
+            <div>
+              <label>Contact Phone</label>
+              <Controller
+                name="contact.phone"
+                control={control}
+                render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="number" />}
+              />
+                </div>
+          </div>
+        )}
+      </div>
 
                 
                       <div className='p-2 mr-2'>
@@ -461,7 +475,7 @@ const AddClient = () => {
             <div>
               <label>Payer Name</label>
               <Controller
-                name="payerAuthorization[0].payerName"
+                name="payerAuthorization.payerName"
                 control={control}
                 render={({ field }) => (
                     <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -475,7 +489,7 @@ const AddClient = () => {
             <div>
               <label>Service Name</label>
               <Controller
-                name="payerAuthorization[0].serviceName"
+                name="payerAuthorization.serviceName"
                 control={control}
                 render={({ field }) => (
                   <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -490,7 +504,7 @@ const AddClient = () => {
             <div>
               <label>Authorization No</label>
               <Controller
-                name="payerAuthorization[0].authorizationNo"
+                name="payerAuthorization.authorizationNo"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md"  {...field} type="text" />}
               />
@@ -498,7 +512,7 @@ const AddClient = () => {
             <div>
               <label>Limitation Value</label>
               <Controller
-                name="payerAuthorization[0].limitationValue"
+                name="payerAuthorization.limitationValue"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="number" />}
               />
@@ -506,7 +520,7 @@ const AddClient = () => {
             <div>
               <label>Limitation</label>
               <Controller
-                name="payerAuthorization[0].limitation"
+                name="payerAuthorization.limitation"
                 control={control}
                 render={({ field }) => (
                   <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -522,7 +536,7 @@ const AddClient = () => {
             <div>
               <label>Format</label>
               <Controller
-                name="payerAuthorization[0].format"
+                name="payerAuthorization.format"
                 control={control}
                 render={({ field }) => (
                  <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -537,7 +551,7 @@ const AddClient = () => {
             <div>
               <label>Admission Id</label>
               <Controller
-                name="payerAuthorization[0].admissionId"
+                name="payerAuthorization.admissionId"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="text" />}
               />
@@ -545,7 +559,7 @@ const AddClient = () => {
             <div>
               <label>Member Id</label>
               <Controller
-                name="payerAuthorization[0].memberId"
+                name="payerAuthorization.memberId"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="text" />}
               />
@@ -553,7 +567,7 @@ const AddClient = () => {
             <div>
               <label>Authorization Start Date</label>
               <Controller
-                name="payerAuthorization[0].authorizationStartDate"
+                name="payerAuthorization.authorizationStartDate"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="date" />}
               />
@@ -561,7 +575,7 @@ const AddClient = () => {
             <div>
               <label>Authorization End Date</label>
               <Controller
-                name="payerAuthorization[0].authorizationEndDate"
+                name="payerAuthorization.authorizationEndDate"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="date" />}
               />
@@ -569,7 +583,7 @@ const AddClient = () => {
             <div>
               <label>Comment</label>
               <Controller
-                name="payerAuthorization[0].comment"
+                name="payerAuthorization.comment"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="text" />}
               />
@@ -577,7 +591,7 @@ const AddClient = () => {
             <div>
               <label>Show In List</label>
               <Controller
-                name="payerAuthorization[0].showInList"
+                name="payerAuthorization.showInList"
                 control={control}
                 render={({ field }) => (
                   <div>
@@ -612,7 +626,7 @@ const AddClient = () => {
             <div>
               <label>Staff Id</label>
               <Controller
-                name="addNote[0].staffId"
+                name="addNote.staffId"
                 control={control}
                 render={({ field }) => (
                   <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -628,7 +642,7 @@ const AddClient = () => {
             <div>
               <label>Staff Name</label>
               <Controller
-                name="addNote[0].staffName"
+                name="addNote.staffName"
                 control={control}
                 render={({ field }) => (
                   <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -643,7 +657,7 @@ const AddClient = () => {
             <div>
               <label>Note</label>
               <Controller
-                name="addNote[0].note"
+                name="addNote.note"
                 control={control}
                 render={({ field }) => <textarea className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} />}
               />
@@ -667,7 +681,7 @@ const AddClient = () => {
             <div>
               <label>Service Name</label>
               <Controller
-                name="privatePayServiceRate[0].serviceName"
+                name="privatePayServiceRate.serviceName"
                 control={control}
                 render={({ field }) => (
                  <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -682,7 +696,7 @@ const AddClient = () => {
             <div>
               <label>Rate</label>
               <Controller
-                name="privatePayServiceRate[0].rate"
+                name="privatePayServiceRate.rate"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="number" />}
               />
@@ -690,7 +704,7 @@ const AddClient = () => {
             <div>
               <label>Start Date</label>
               <Controller
-                name="privatePayServiceRate[0].startDate"
+                name="privatePayServiceRate.startDate"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="date" />}
               />
@@ -698,7 +712,7 @@ const AddClient = () => {
             <div>
               <label>End Date</label>
               <Controller
-                name="privatePayServiceRate[0].endDate"
+                name="privatePayServiceRate.endDate"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="date" />}
               />
@@ -706,7 +720,7 @@ const AddClient = () => {
             <div>
               <label>Service Type</label>
               <Controller
-                name="privatePayServiceRate[0].serviceType"
+                name="privatePayServiceRate.serviceType"
                 control={control}
                 render={({ field }) => (
                  <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -721,7 +735,7 @@ const AddClient = () => {
             <div>
               <label>Code</label>
               <Controller
-                name="privatePayServiceRate[0].code"
+                name="privatePayServiceRate.code"
                 control={control}
                 render={({ field }) => <input className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md" {...field} type="number" />}
               />
@@ -745,7 +759,7 @@ const AddClient = () => {
             <div>
               <label>Staff Id</label>
               <Controller
-                name="addExclusion[0].staffId"
+                name="addExclusion.staffId"
                 control={control}
                 render={({ field }) => (
                  <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
@@ -760,7 +774,7 @@ const AddClient = () => {
             <div>
               <label>Staff Name</label>
               <Controller
-                name="addExclusion[0].staffName"
+                name="addExclusion.staffName"
                 control={control}
                 render={({ field }) => (
                  <select {...field} className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md">
